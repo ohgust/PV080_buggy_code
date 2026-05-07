@@ -4,10 +4,19 @@ import flask
 app = flask.Flask(__name__)
 
 
+ALLOWED_URLS = {
+    "google": "https://www.google.com",
+    "example": "https://example.com",
+}
+
+
 @app.route("/")
 def index():
     version = flask.request.args.get("urllib_version")
-    url = flask.request.args.get("url")
+    url_key = flask.request.args.get("url")
+    if url_key not in ALLOWED_URLS:
+        return "Invalid url parameter", 400
+    url = ALLOWED_URLS[url_key]
     return fetch_website(version, url)
 
         
